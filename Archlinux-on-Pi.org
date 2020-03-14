@@ -1,0 +1,289 @@
+#+TITLE:2020-03-06-0224 Installing Arch on Raspi
+#+Author: Sean Terrell
+#+Tags:
+
+https://www.youtube.com/watch?v=BbnSoY_yDr8&t=226s
+
+* Prereqs
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 05:08]
+:END:
+The following are necessary to be successful at the steps that follow
+- Raspi 3 or better
+- internet and  local network access (wireless or wired) for pi and eng workstation
+- SD card for booting raspi
+- SD card reader device
+- VNC software installed [[https://www.realvnc.com/en/connect/download/viewer/][real VNC is free and works]]
+- IP scanner [[https://angryip.org]]
+- some patience and luck
+
+* Install Bootloader and OS
+:PROPERTIES:
+:CREATED:  [2020-03-06 Fri 19:45]
+:END:
+** PINN is a bootloader that will allow SSH and VNC at boot time
+:PROPERTIES:
+:CREATED:  [2020-03-06 Fri 19:45]
+:END:
+- Download PINN [[https://sourceforge.net/projects/pinn/][here]]
+- After downloading unzip the file and copy all the contents to the SD "/"
+- Congrats PINN is installed
+
+Ok while yes your raspi will boot into PINN now but it wont go any further
+without input from YOU.
+
+so you can either
+a) connect raspi to a keyboard and mouse and monitor or
+b) do the following.
+
+- on the SD card, where you just pasted all the contents of the PINN folder.. find
+  the file called recovery.cmdline
+- append the following to the arguments (long list scroll to the right),
+~forcetrigger~
+
+And then
+
+~vncshare~
+
+this will cause the PINN bootloader to ALWAYS stop before booting even after an
+OS is installed and will then set up the VNC connection to access the VNC
+service
+
+- Save the recovery.cmdline file, put the SD card in the Pi and give it some
+  power
+** Install Arch Linux
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 05:28]
+:END:
+- When your Pi boots, you need to find the IP address, so run an IP scanner and
+  look for a locally connected device with the hostname "recovery"
+- that will be the PINN bootloader on the PI
+
+- Next open your Real VNC or other VNC client and connect to the Recovery IP on
+  port 5900
+  - Port 5900 is important.. its the only VNC port open
+
+- You should be able to locate the Arch Linux installer in the PINN gui
+- tick the checkbox to install arch
+- then proceed to the menu with the install button and click that
+- close real vnc and wait -- for a good while.. 30 mins plus with the slow NIC
+  on the pi 3
+
+** When PI Boots up, after download and installation of arch
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 05:37]
+:END:
+- again you are going to need to scan for the IP of the device, this time with
+  the hostname alarm or alarmpi
+- after locating the Pi, enter a terminal window on your engineering machine and
+  ~SSH alarm@'ip-that-scanner-shows'~
+- The two default users and passwords for arch linux ARMHF are
+
+  | User  | Password |
+  |-------+----------|
+  | Alarm | alarm    |
+  | Root  | root     |
+
+** Installing essentials
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:04]
+:END:
+- Next we install Pacman, update / upgrade and install SUDO for root command
+  access
+- while SSH is connected login as root
+
+- First execute the following commands over the SSH connection
+  ~pacman-key –init~
+- Next upgrade your install with ~pacman -Syyu~
+- After the upgrade is complete
+
+- ~pacman -S sudo screen~ to install sudo and screen
+- once those are complete, we have to edit the sudoers file to add alarm too it
+
+#+BEGIN_SRC bash
+vi /etc/sudoers.d/myOverrides
+#+END_SRC
+- then add ~alarm ALL=NOPASSWD: ALL~ to the sudoers file
+- save the sudoers file and switch to the alarm user
+  ~su alarm~
+
+** Now we are getting into some real stuff - Install yay
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:16]
+:END:
+- Installing yay aur helper
+
+  If you are not familiar with archlinux you arent going to be aware of the AUR
+  and what an AUR helper is
+
+  Without wasting alot of time there - the AUR is what makes Archlinux the best
+  distro out there, its the Arch User Repository. Your normal package manager
+  wont get packages there at all, so  we install a helper called yay
+*** First Install Git
+:PROPERTIES:
+:CREATED:  [2020-03-06 Fri 02:27]
+:END:
+~sudo pacman -S git~
+
+*** Then Git Clone
+:PROPERTIES:
+:CREATED:  [2020-03-06 Fri 02:30]
+:END:
+get yay and put it somewhere ~git clone https://aur.archlinux.org/yay.git/ \~
+then
+*** and build yay from that package
+~cd yay~ and then ~ls~
+observe that there is a =PKGBUILD= dir in the =~/yay= directory
+execute the following command
+~makepkg -si~ 
+and observe that make begins running to makepkg of yay
+
+** Ok after yay is now giving us access to the AUR we need Snapd
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:34]
+:END:
+- and we get that with ~$yay -S snapd~
+
+** Get lxd from the snapstore
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:37]
+:END:
+Close to the end here
+- Need to ~sudo snapd install lxd~
+
+** Ok add alarm user to LXD group
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:40]
+:END:
+#+BEGIN_SRC bash
+sudo gpasswd -a alarm lxd
+#+END_SRC
+#+BEGIN_SRC bash
+# to check the group addition
+getent group lxd
+# observe alarm added
+#+END_SRC
+- then log out and back in
+  or ~newgrp lxd~
+
+- Next check systemd to see if its running
+~sudo systemctl status lxd~
+
+if not
+~sudo systemctl start lxd~
+
+
+** Init LXD
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:48]
+:END:
+- first get your pi ethernt device ID
+  ~ifconfig~
+
+ [[file:./Installing-Arch-on-Raspi.org_imgs/20200314_065959_tZhN6i.png]]
+
+- the image clearly demonstrates that eth0 is the interface assigned with the IP
+  address on my Pi
+
+- Now we can ~lxd init~
+
+  [[file:./Installing-Arch-on-Raspi.org_imgs/20200314_070354_n1NqMp.png]]
+
+  for each question you will NOT answer NO as in the IMAGE see below
+
+  1) use clustering = NO
+
+  2) new storage pool = Yes
+
+  3) give it a name ? = MowhawkSilence
+
+  4) name of backend = BTRFS is fine (or your choice zfs??)
+
+  5) create new pool = YES
+
+  6) connect MAAS server = NO
+
+  7) new local bridge = No
+
+  8) connect to existing bridge = yes
+
+  9) which one = eth0 (or the network interface noted above)
+
+  10) available over net? = no
+
+  11) update stale images = as you wish
+
+  12) yaml output printed = up to you
+
+
+- after lxd is init we are ready to spin a container
+
+** spin up a ubuntu 18.04 container
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 07:13]
+:END:
+
+- ~lxc launch ubuntu:18.04~
+  - lxc will create the container and give it a name like "sweet-horse" or
+    "pineberry-socks"
+
+- you can see the status of lxc containers at any time with the command
+  ~lxc list~ or ~lxc ls~
+
+- you can enter these containers buy asking lxc to execute a command or by
+  attaching the console after setting some permissions
+
+- ~lxc config set <name> security.privileged true~
+- ~lxc config set <name> security.nesting true~
+- then we need to set the passwords on our container
+  ~lxc exec <name> -- passwd root~
+  ~lxc exec <name> -- passwd ubuntu~
+
+- then you can attach to a console with
+  ~lxc console <container name>~
+
+** Git hub clone IOTStack into LXC
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 07:30]
+:END:
+
+ - ~LXC console x1~
+
+ - ok ~git clone https://github.com/PLCMercenary/IOTstack.git \~ right onto the
+   container
+ - then ~cd IOTstack~ and do ~sudo ./menu.sh \~
+
+ - a graphical menu will pop up and you should
+   "install docker and docker compose"
+   then reboot when directed too to so
+#+BEGIN_QUOTE
+NOTE NOTE NOTE
+  When the Pi reboots its going to remain held in PINN bootloader because of the
+  FORCETRIGGER we added
+
+  Connect with your VNC program and all you have to do is click the EXIT button.
+  Arch will boot directly straight away
+#+END_QUOTE
+
+ reattach your console
+
+- ~lxc console x1~
+- ~cd IOTstack~
+- ~sudo ./menu.sh \~
+- build stack
+    - Portainer
+    - Node-Red
+    - Grafana
+    - Mosquitto
+    - Influx db
+
+    - Pick some Node Red nodes to install
+
+      ~docker-compose -up -d~
+
+* Finally after the Docker stack is up
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 07:48]
+:END:
+Install the Codesys SL from the codesys software onto the LXC address??
+
