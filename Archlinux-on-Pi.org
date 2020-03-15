@@ -1,8 +1,25 @@
 #+TITLE:2020-03-06-0224 Installing Arch on Raspi
 #+Author: Sean Terrell
+#+Date: @date
+#+Email: PLCMercenary@vivaldi.net
 #+Tags:
 
-https://www.youtube.com/watch?v=BbnSoY_yDr8&t=226s
+
+* Table of Contents :TOC:
+- [[#prereqs][Prereqs]]
+- [[#install-bootloader-and-os][Install Bootloader and OS]]
+  - [[#pinn-is-a-bootloader-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bootloader that will allow SSH and VNC at boot time]]
+  - [[#install-arch-linux][Install Arch Linux]]
+  - [[#when-pi-boots-up-after-download-and-installation-of-arch][When PI Boots up, after download and installation of arch]]
+  - [[#installing-essentials][Installing essentials]]
+  - [[#now-we-are-getting-into-some-real-stuff---install-yay][Now we are getting into some real stuff - Install yay]]
+  - [[#ok-after-yay-is-now-giving-us-access-to-the-aur-we-need-snapd][Ok after yay is now giving us access to the AUR we need Snapd]]
+  - [[#get-lxd-from-the-snapstore][Get lxd from the snapstore]]
+  - [[#ok-add-alarm-user-to-lxd-group][Ok add alarm user to LXD group]]
+  - [[#init-lxd][Init LXD]]
+  - [[#spin-up-a-ubuntu-1804-container][spin up a ubuntu 18.04 container]]
+  - [[#git-hub-clone-iotstack-into-lxc][Git hub clone IOTStack into LXC]]
+- [[#finally-after-the-docker-stack-is-up][Finally after the Docker stack is up]]
 
 * Prereqs
 :PROPERTIES:
