@@ -1,0 +1,77 @@
+
+# Table of Contents
+
+-   [PLC and ICS are crappy and old](#orgc056718)
+-   [Links](#orgdfdb254)
+-   [Docker Dashboards](#orge16aef9)
+
+
+
+<a id="orgc056718"></a>
+
+# PLC and ICS are crappy and old
+
+    CREATED: [2020-03-15 Sun 04:13]
+
+since Controls guys usually arent doing development like this, most of them
+really dont have much experience with dockers or even testing environs since the
+IDE&rsquo;s are preconfigured and only work with very specific controllers
+
+Ok SO PLC dudes, I get it.. your laptop works, you have your software
+activations and you know what you need to do to be effective, that means serial
+cables, USB to DB9 connectors, a wireless router, and electrical type tools. ill
+bet most of you are well versed with VM&rsquo;s??, proably have at least an XP vm
+maybe even a win server 2K vm ??
+
+well
+
+A container can be a vm. but the best way to see it, is as 2 different types of
+vm, either machine containers or applicaiton containers. The two containers
+that we will be using in this project are LXC (pronounced LEX-SEE or even Lexi
+if that helps) with LXD (also LexDee or Lexi with a D) and Docker Containers.
+
+LXC instances are for all intents basically Virtual Machines with an entire
+linux OS at your disposal. Yes. Linux is a big driver of the softmarket and has
+become very much something that is a part of your toolkit
+
+Docker containers are not whole OS&rsquo;s but they are a crafted environemnt that
+only runs what is necessary, only the parts of an os or system that are needed
+for a single application to execute.
+
+So one LXD can run many dockers. One Docker is made to run one applicaiton,
+1 docker for NodeRed, another for InfluxDB, and still another for Mosquitto
+Broker.
+
+
+<a id="orgdfdb254"></a>
+
+# Links
+
+    CREATED: [2020-03-15 Sun 05:05]
+
+-   LXD and LXC <https://lxc.org/>
+-   [docker docs](https://docs.docker.com )
+-   PLCMercenary [IOTstack Link](https://github.com/PLCMercenary/IOTstack)
+    Currently even with GGarner (orig), Plans to add thingsboard GW and rewite for
+    Arch
+-   [IOTstack Wiki](https://github.com/gcgarner/IOTstack/wiki)
+
+
+<a id="orge16aef9"></a>
+
+# Docker Dashboards
+
+    CREATED: [2020-03-15 Sun 05:22]
+
+-   Since Docker is essentally a wrapper for a partial OS or some set of system
+    services, they can be a bit confusing to interact with when they are running.
+    this is why there are seveal third party applications that give dashboards and
+    gui interfaces for docker.
+    
+    Cockpit is a great dashboard, Docky is a command line tool that makes your
+    terminal look crazy awesome.
+
+-   The IOT stack includes a docker called Portainer. this gives a web interface
+    to all of the docker containers on your pi and proably the most important to
+    get working right away.
+

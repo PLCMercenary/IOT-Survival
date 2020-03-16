@@ -1,9 +1,7 @@
 #+TITLE:2020-03-06-0224 Installing Arch on Raspi
 #+Author: Sean Terrell
-#+Date: @date
-#+Email: PLCMercenary@vivaldi.net
-#+Tags:
 
+- tags ::
 
 * Table of Contents :TOC:
 - [[#prereqs][Prereqs]]
@@ -110,15 +108,16 @@ service
 - while SSH is connected login as root
 
 - First execute the following commands over the SSH connection
-  ~pacman-key –init~
-- Next upgrade your install with ~pacman -Syyu~
+  ~pacman-key –init~  this will init the pacman keyserver
+  ~pacman-key -populate archlinuxarm~ this pulls the necessary gpg keys in for
+  the armV(6,7,8) architecture
+- =Next= upgrade your install with ~pacman -Syyu~
 - After the upgrade is complete
 
 - ~pacman -S sudo screen~ to install sudo and screen
 - once those are complete, we have to edit the sudoers file to add alarm too it
-
 #+BEGIN_SRC bash
-vi /etc/sudoers.d/myOverrides
+vim /etc/sudoers.d/myOverrides
 #+END_SRC
 - then add ~alarm ALL=NOPASSWD: ALL~ to the sudoers file
 - save the sudoers file and switch to the alarm user
