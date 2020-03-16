@@ -108,9 +108,15 @@ service
 - while SSH is connected login as root
 
 - First execute the following commands over the SSH connection
-  ~pacman-key –init~  this will init the pacman keyserver
-  ~pacman-key -populate archlinuxarm~ this pulls the necessary gpg keys in for
-  the armV(6,7,8) architecture
+
+  : pacman-key –init
+  
+  this will init the pacman keyserver
+
+  : pacman-key -populate archlinuxarm
+
+  this pulls the necessary gpg keys in for the armV(6,7,8) architecture
+
 - =Next= upgrade your install with ~pacman -Syyu~
 - After the upgrade is complete
 
