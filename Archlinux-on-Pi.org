@@ -6,12 +6,13 @@
 * Table of Contents :TOC:
 - [[#prereqs][Prereqs]]
 - [[#install-bootloader-and-os][Install Bootloader and OS]]
-  - [[#pinn-is-a-bootloader-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bootloader that will allow SSH and VNC at boot time]]
+  - [[#pinn-is-a-bottled-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bottled that will allow SSH and VNC at boot time]]
   - [[#install-arch-linux][Install Arch Linux]]
   - [[#when-pi-boots-up-after-download-and-installation-of-arch][When PI Boots up, after download and installation of arch]]
   - [[#installing-essentials][Installing essentials]]
-  - [[#now-we-are-getting-into-some-real-stuff---install-yay][Now we are getting into some real stuff - Install yay]]
-  - [[#ok-after-yay-is-now-giving-us-access-to-the-aur-we-need-snapd][Ok after yay is now giving us access to the AUR we need Snapd]]
+- [[#what-is-this-aur-thing-and-yay-sounds-hacker-ish-to-me][What is this AUR thing and Yay? sounds hacker-ish to me]]
+- [[#installing-yay][Installing yay]]
+  - [[#lets-get-the-snapstore-from-the-aur][Let's get the Snapstore from the AUR]]
   - [[#get-lxd-from-the-snapstore][Get lxd from the snapstore]]
   - [[#ok-add-alarm-user-to-lxd-group][Ok add alarm user to LXD group]]
   - [[#init-lxd][Init LXD]]
@@ -36,7 +37,7 @@ The following are necessary to be successful at the steps that follow
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 19:45]
 :END:
-** PINN is a bootloader that will allow SSH and VNC at boot time
+** PINN is a bottled that will allow SSH and VNC at boot time
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 19:45]
 :END:
@@ -108,63 +109,105 @@ service
 - while SSH is connected login as root
 
 - First execute the following commands over the SSH connection
-
   : pacman-key –init
-  
   this will init the pacman keyserver
 
   : pacman-key -populate archlinuxarm
-
   this pulls the necessary gpg keys in for the armV(6,7,8) architecture
 
-- =Next= upgrade your install with ~pacman -Syyu~
+- =Next= upgrade your install with
+  : pacman -Syyu
+
 - After the upgrade is complete
 
-- ~pacman -S sudo screen~ to install sudo and screen
+- install sudo and screen
+  : pacman -S sudo screen
+
 - once those are complete, we have to edit the sudoers file to add alarm too it
 #+BEGIN_SRC bash
-vim /etc/sudoers.d/myOverrides
+vim /etc/sudoers.d/myOvrides
 #+END_SRC
-- then add ~alarm ALL=NOPASSWD: ALL~ to the sudoers file
-- save the sudoers file and switch to the alarm user
-  ~su alarm~
+- This will both create and open VIM to edit the file.
+  adding
+  : alarm ALL=NOPASSWD: ALL
+  to the sudoers/myOverrides file gives sudo access from the main account
 
-** Now we are getting into some real stuff - Install yay
+- save the sudoers file and switch to the alarm user
+  : su alarm
+  just so that you arent running as Root all the time
+
+- Lets make sure everything seems ok with sudo
+    We can quickly install one more essential package with
+    : sudo pacman -S base-devel
+    Using the "needed" flag will only grab applicable for your processor and not
+  installed packages from this group
+  : sudo pacman -S --needed base-devel
+
+  This will be the first package to ask about which locations or builds to
+  install. Stick with the default ALL
+
+This is all of the essential Arch build - moving along we will get into some
+deeper linux theory and containers
+
+* What is this AUR thing and Yay? sounds hacker-ish to me
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:16]
 :END:
-- Installing yay aur helper
-
-  If you are not familiar with archlinux you arent going to be aware of the AUR
+ If you are not familiar with archlinux you arent going to be aware of the AUR
   and what an AUR helper is
 
   Without wasting alot of time there - the AUR is what makes Archlinux the best
-  distro out there, its the Arch User Repository. Your normal package manager
-  wont get packages there at all, so  we install a helper called yay
+  distro out there, its the Arch User Repository.
+
+  Which requires further explination about.. but the [[https://wiki.archlinux.org/index.php/Arch_User_Repository][wiki]] is awesome and
+  explains the AUR far better than I could
+#+BEGIN_QUOTE
+- From the Arch AUR [[https://wiki.archlinux.org/index.php/Arch_User_Repository][wiki]]
+
+The Arch User Repository (AUR) is a community-driven repository for Arch users. It contains package descriptions (PKGBUILDs) that allow you to compile a package from source with makepkg and then install it via pacman. The AUR was created to organize and share new packages from the community and to help expedite popular packages' inclusion into the community repository. This document explains how users can access and utilize the AUR.
+#+END_QUOTE
+
+Your normal package manager wont install these pkgbuild binaries so its alot
+  easier to install an AUR helper that can search the AUR and install pkgs that
+  pacman need built and checked first
+
+* Installing yay
+
+While there are several different AUR helpers, each with their own "flavor" or
+bennefit for using, Yay is a highly recommended helper that uses the same syntax
+as pacman and reduces the learning curve on making packages from source.
+
 *** First Install Git
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 02:27]
 :END:
-~sudo pacman -S git~
+We need to get yay from a git repo.
 
-*** Then Git Clone
+: sudo pacman -S git
+
+*** Then Clone yay
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 02:30]
 :END:
-get yay and put it somewhere ~git clone https://aur.archlinux.org/yay.git/ \~
-then
-*** and build yay from that package
-~cd yay~ and then ~ls~
-observe that there is a =PKGBUILD= dir in the =~/yay= directory
+get yay from GIT and clone it to a directory
+   : git clone https://aur.archlinux.org/yay.git/
+The Command above will clone yay into the directory
+   : cd ~/yay
+and ~ls~ will reveal a =PKGBUILD= object in yay dir
+
+*** Build yay
 execute the following command
-~makepkg -si~ 
+: makepkg -si
 and observe that make begins running to makepkg of yay
 
-** Ok after yay is now giving us access to the AUR we need Snapd
+This one is going to take a bit
+
+** Let's get the Snapstore from the AUR
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:34]
 :END:
-- and we get that with ~$yay -S snapd~
+Yay is going in use right away to instal snapstore
+: $ yay -S snapd
 
 ** Get lxd from the snapstore
 :PROPERTIES:
@@ -301,7 +344,7 @@ NOTE NOTE NOTE
 
     - Pick some Node Red nodes to install
 
-      ~docker-compose -up -d~
+      ~docker-compose -up -d~:
 
 * Finally after the Docker stack is up
 :PROPERTIES:
