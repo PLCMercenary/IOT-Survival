@@ -12,25 +12,14 @@
   - [[#installing-essentials][Installing essentials]]
 - [[#what-is-this-aur-thing-and-yay-sounds-hacker-ish-to-me][What is this AUR thing and Yay? sounds hacker-ish to me]]
 - [[#installing-yay][Installing yay]]
-<<<<<<< HEAD
   - [[#lets-get-the-snapstore-and-configure-it][Let's get the Snapstore and configure it]]
-=======
-<<<<<<< HEAD
-  - [[#lets-get-the-snapstore-and-configure-it][Let's get the Snapstore and configure it]]
-=======
->>>>>>> b7b6948... more additions and clarification
   - [[#lets-get-the-snapstore-from-the-aur][Let's get the Snapstore from the AUR]]
->>>>>>> acad01e... more additions and clarification
   - [[#get-lxd-from-the-snapstore][Get lxd from the snapstore]]
   - [[#ok-add-alarm-user-to-lxd-group][Ok add alarm user to LXD group]]
   - [[#init-lxd][Init LXD]]
   - [[#spin-up-a-ubuntu-1804-container][spin up a ubuntu 18.04 container]]
   - [[#configure-ssh-on-the-container][configure SSH on the container]]
-<<<<<<< HEAD
 - [[#iotstack-and-docker][IOTStack and Docker]]
-=======
-  - [[#git-hub-clone-iotstack-into-lxc][Git hub clone IOTStack into LXC]]
->>>>>>> b7b6948... more additions and clarification
 
 * Prereqs
 :PROPERTIES:
@@ -132,7 +121,6 @@ service
 
 - After the upgrade is complete
 
-<<<<<<< HEAD
 - install sudo and screen, optionally install fish shell, my favorite and vim
   text editor
   : pacman -S sudo screen fish vim
@@ -141,7 +129,6 @@ service
 
 : vim /etc/sudoers.d/myOvrides
 
-=======
 - install sudo and screen
   : pacman -S sudo screen
 
@@ -149,7 +136,6 @@ service
 #+BEGIN_SRC bash
 vim /etc/sudoers.d/myOvrides
 #+END_SRC
->>>>>>> acad01e... more additions and clarification
 - This will both create and open VIM to edit the file.
   adding
   : alarm ALL=NOPASSWD: ALL
@@ -158,7 +144,6 @@ vim /etc/sudoers.d/myOvrides
 - save the sudoers file and switch to the alarm user
   : su alarm
   just so that you arent running as Root all the time
-<<<<<<< HEAD
 
 - Lets make sure everything seems ok with sudo
     We can quickly install one more essential package with
@@ -170,7 +155,6 @@ vim /etc/sudoers.d/myOvrides
   This will be the first package to ask about which locations or builds to
   install. Stick with the default ALL
 
-=======
 
 - Lets make sure everything seems ok with sudo
     We can quickly install one more essential package with
@@ -182,7 +166,6 @@ vim /etc/sudoers.d/myOvrides
   This will be the first package to ask about which locations or builds to
   install. Stick with the default ALL
 
->>>>>>> acad01e... more additions and clarification
 This is all of the essential Arch build - moving along we will get into some
 deeper linux theory and containers
 
@@ -239,7 +222,6 @@ and observe that make begins running to makepkg of yay
 
 This one is going to take a bit
 
-<<<<<<< HEAD
 ** Let's get the Snapstore and configure it
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:34]
@@ -255,14 +237,12 @@ last we make a symlink to the snapstore
 :  sudo ln -s /var/lib/shapd/snap /snap
 
 and we are good to run snaps
-=======
 ** Let's get the Snapstore from the AUR
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:34]
 :END:
 Yay is going in use right away to instal snapstore
 : $ yay -S snapd
->>>>>>> acad01e... more additions and clarification
 
 ** Get lxd from the snapstore
 :PROPERTIES:
@@ -385,17 +365,6 @@ for debian and ubuntu.. anything that isnt going to hold you up typing it
 
 - then you can attach to a console with
 : lxc console <container name>
-<<<<<<< HEAD
-=======
-
-** TODO configure SSH on the container
-:PROPERTIES:
-:CREATED:  [2020-03-24 Tue 03:11]
-:END:
-If using ubuntu container this is fairly easy
-
-
->>>>>>> b7b6948... more additions and clarification
 
 ** TODO configure SSH on the container
 :PROPERTIES:
@@ -443,16 +412,3 @@ NOTE NOTE NOTE
     - Pick some Node Red nodes to install
 
       ~docker-compose -up -d~:
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
-* Finally after the Docker stack is up
-:PROPERTIES:
-:CREATED:  [2020-03-14 Sat 07:48]
-:END:
-Install the Codesys SL from the codesys software onto the LXC address??
-
->>>>>>> acad01e... more additions and clarification
->>>>>>> b7b6948... more additions and clarification
