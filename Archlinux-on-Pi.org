@@ -12,13 +12,17 @@
   - [[#installing-essentials][Installing essentials]]
 - [[#what-is-this-aur-thing-and-yay-sounds-hacker-ish-to-me][What is this AUR thing and Yay? sounds hacker-ish to me]]
 - [[#installing-yay][Installing yay]]
+<<<<<<< HEAD
+  - [[#lets-get-the-snapstore-and-configure-it][Let's get the Snapstore and configure it]]
+=======
   - [[#lets-get-the-snapstore-from-the-aur][Let's get the Snapstore from the AUR]]
+>>>>>>> acad01e... more additions and clarification
   - [[#get-lxd-from-the-snapstore][Get lxd from the snapstore]]
   - [[#ok-add-alarm-user-to-lxd-group][Ok add alarm user to LXD group]]
   - [[#init-lxd][Init LXD]]
   - [[#spin-up-a-ubuntu-1804-container][spin up a ubuntu 18.04 container]]
+  - [[#configure-ssh-on-the-container][configure SSH on the container]]
   - [[#git-hub-clone-iotstack-into-lxc][Git hub clone IOTStack into LXC]]
-- [[#finally-after-the-docker-stack-is-up][Finally after the Docker stack is up]]
 
 * Prereqs
 :PROPERTIES:
@@ -120,6 +124,16 @@ service
 
 - After the upgrade is complete
 
+<<<<<<< HEAD
+- install sudo and screen, optionally install fish shell, my favorite and vim
+  text editor
+  : pacman -S sudo screen fish vim
+
+- once those are complete, we have to edit the sudoers file to add alarm too it
+
+: vim /etc/sudoers.d/myOvrides
+
+=======
 - install sudo and screen
   : pacman -S sudo screen
 
@@ -127,6 +141,7 @@ service
 #+BEGIN_SRC bash
 vim /etc/sudoers.d/myOvrides
 #+END_SRC
+>>>>>>> acad01e... more additions and clarification
 - This will both create and open VIM to edit the file.
   adding
   : alarm ALL=NOPASSWD: ALL
@@ -135,6 +150,7 @@ vim /etc/sudoers.d/myOvrides
 - save the sudoers file and switch to the alarm user
   : su alarm
   just so that you arent running as Root all the time
+<<<<<<< HEAD
 
 - Lets make sure everything seems ok with sudo
     We can quickly install one more essential package with
@@ -146,6 +162,19 @@ vim /etc/sudoers.d/myOvrides
   This will be the first package to ask about which locations or builds to
   install. Stick with the default ALL
 
+=======
+
+- Lets make sure everything seems ok with sudo
+    We can quickly install one more essential package with
+    : sudo pacman -S base-devel
+    Using the "needed" flag will only grab applicable for your processor and not
+  installed packages from this group
+  : sudo pacman -S --needed base-devel
+
+  This will be the first package to ask about which locations or builds to
+  install. Stick with the default ALL
+
+>>>>>>> acad01e... more additions and clarification
 This is all of the essential Arch build - moving along we will get into some
 deeper linux theory and containers
 
@@ -202,12 +231,30 @@ and observe that make begins running to makepkg of yay
 
 This one is going to take a bit
 
+<<<<<<< HEAD
+** Let's get the Snapstore and configure it
+:PROPERTIES:
+:CREATED:  [2020-03-14 Sat 06:34]
+:END:
+Yay is going in use right away to install snapstore
+: $ yay -S snapd
+
+Then we start the systemd service for snaps
+: sudo systemctl enable --now snapd.socket
+
+last we make a symlink to the snapstore
+
+:  sudo ln -s /var/lib/shapd/snap /snap
+
+and we are good to run snaps
+=======
 ** Let's get the Snapstore from the AUR
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:34]
 :END:
 Yay is going in use right away to instal snapstore
 : $ yay -S snapd
+>>>>>>> acad01e... more additions and clarification
 
 ** Get lxd from the snapstore
 :PROPERTIES:
@@ -232,29 +279,30 @@ getent group lxd
   or ~newgrp lxd~
 
 - Next check systemd to see if its running
-~sudo systemctl status lxd~
+: sudo systemctl status lxd
 
 if not
-~sudo systemctl start lxd~
+: sudo systemctl start lxd
 
 
 ** Init LXD
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:48]
 :END:
-- first get your pi ethernt device ID
-  ~ifconfig~
+- first get your pi ethernet device ID
+  : ifconfig
 
  [[file:./Installing-Arch-on-Raspi.org_imgs/20200314_065959_tZhN6i.png]]
 
 - the image clearly demonstrates that eth0 is the interface assigned with the IP
   address on my Pi
 
-- Now we can ~lxd init~
+- Now we can
+  : lxd init
 
   [[file:./Installing-Arch-on-Raspi.org_imgs/20200314_070354_n1NqMp.png]]
 
-  for each question you will NOT answer NO as in the IMAGE see below
+  for each question you will NOT answer NO as in the IMAGE: see below
 
   1) use clustering = NO
 
@@ -268,17 +316,20 @@ if not
 
   6) connect MAAS server = NO
 
-  7) new local bridge = No
+  7) new local bridge = yes
 
-  8) connect to existing bridge = yes
+- optionally say no to bridge and point directly at your eth port
+       7.A) connect to existing bridge = yes
 
-  9) which one = eth0 (or the network interface noted above)
+       7.B) which one = eth0 (or the network interface noted above)
 
-  10) available over net? = no
+  8) what should bridge be named = lxdbr0
 
-  11) update stale images = as you wish
+  9) available over net? = no
 
-  12) yaml output printed = up to you
+  10) update stale images = as you wish
+
+  11) yaml output printed = up to you
 
 
 - after lxd is init we are ready to spin a container
@@ -288,9 +339,29 @@ if not
 :CREATED:  [2020-03-14 Sat 07:13]
 :END:
 
-- ~lxc launch ubuntu:18.04~
+So this theoricically should work with "any" Debian based distro
+Codesys uses SSH and SFTP to install a .deb package onto your linux device. this
+is why it cannot install directly to the archlinux. use command
+~lxc image list images:~ for a list of all publically hosted Linux containers
+
+
+ : lxc launch ubuntu:18.04
+#+BEGIN_COMMENT
+I am writing this in march 2020, with the Ubuntu LTS realese for 20.04 right
+around the corner, its likely preferable that you use the latest LTS vs 18.04
+#+END_COMMENT
+
   - lxc will create the container and give it a name like "sweet-horse" or
     "pineberry-socks"
+
+#+BEGIN_COMMENT
+Leaving the final arguement of no name is usually not a bad thing, as the LXC
+daemon will assign a name automatically, however these can get annoyingly long
+to type when doing lots of configuration or - as in this case I have been
+troubleshooting quite a bit, I recommend using something like c1 or d1 and u1
+for debian and ubuntu.. anything that isnt going to hold you up typing it
+#+END_COMMENT
+
 
 - you can see the status of lxc containers at any time with the command
   ~lxc list~ or ~lxc ls~
@@ -298,14 +369,22 @@ if not
 - you can enter these containers buy asking lxc to execute a command or by
   attaching the console after setting some permissions
 
-- ~lxc config set <name> security.privileged true~
-- ~lxc config set <name> security.nesting true~
+: lxc config set <name> security.privileged true
+: lxc config set <name> security.nesting true
 - then we need to set the passwords on our container
-  ~lxc exec <name> -- passwd root~
-  ~lxc exec <name> -- passwd ubuntu~
+ : lxc exec <name> -- passwd root
+ : lxc exec <name> -- passwd ubuntu
 
 - then you can attach to a console with
-  ~lxc console <container name>~
+: lxc console <container name>
+
+** TODO configure SSH on the container
+:PROPERTIES:
+:CREATED:  [2020-03-24 Tue 03:11]
+:END:
+If using ubuntu container this is fairly easy
+
+
 
 ** Git hub clone IOTStack into LXC
 :PROPERTIES:
@@ -345,6 +424,8 @@ NOTE NOTE NOTE
     - Pick some Node Red nodes to install
 
       ~docker-compose -up -d~:
+<<<<<<< HEAD
+=======
 
 * Finally after the Docker stack is up
 :PROPERTIES:
@@ -352,3 +433,4 @@ NOTE NOTE NOTE
 :END:
 Install the Codesys SL from the codesys software onto the LXC address??
 
+>>>>>>> acad01e... more additions and clarification
