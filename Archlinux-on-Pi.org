@@ -6,7 +6,7 @@
 ![Cases](https://covid19-badges.herokuapp.com/confirmed?long=true)
 ![Deaths](https://covid19-badges.herokuapp.com/deaths?long=true)
 ![Recovered](https://covid19-badges.herokuapp.com/recovered?long=true)
-
+[[https://circleci.com/gh/akirak/emacs.d/tree/master][https://circleci.com/gh/akirak/emacs.d/tree/master.svg?style=svg]]
 
 
 * Table of Contents :TOC:
