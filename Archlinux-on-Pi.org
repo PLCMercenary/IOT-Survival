@@ -3,6 +3,12 @@
 
 - tags ::
 
+![Cases](https://covid19-badges.herokuapp.com/confirmed?long=true)
+![Deaths](https://covid19-badges.herokuapp.com/deaths?long=true)
+![Recovered](https://covid19-badges.herokuapp.com/recovered?long=true)
+
+
+
 * Table of Contents :TOC:
 - [[#prereqs][Prereqs]]
 - [[#install-bootloader-and-os][Install Bootloader and OS]]
@@ -255,14 +261,13 @@ Close to the end here
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 06:40]
 :END:
-#+BEGIN_SRC bash
-sudo gpasswd -a alarm lxd
-#+END_SRC
-#+BEGIN_SRC bash
-# to check the group addition
-getent group lxd
-# observe alarm added
-#+END_SRC
+: sudo gpasswd -a alarm lxd
+
+to check the group addition you can
+
+: getent group lxd
+observe alarm added
+
 - then log out and back in
   or ~newgrp lxd~
 
@@ -334,21 +339,22 @@ is why it cannot install directly to the archlinux. use command
 
 
  : lxc launch ubuntu:18.04
-#+BEGIN_COMMENT
+
+#+BEGIN_quote
 I am writing this in march 2020, with the Ubuntu LTS realese for 20.04 right
 around the corner, its likely preferable that you use the latest LTS vs 18.04
-#+END_COMMENT
+#+END_quote
 
   - lxc will create the container and give it a name like "sweet-horse" or
     "pineberry-socks"
 
-#+BEGIN_COMMENT
+#+BEGIN_quote
 Leaving the final arguement of no name is usually not a bad thing, as the LXC
 daemon will assign a name automatically, however these can get annoyingly long
 to type when doing lots of configuration or - as in this case I have been
 troubleshooting quite a bit, I recommend using something like c1 or d1 and u1
 for debian and ubuntu.. anything that isnt going to hold you up typing it
-#+END_COMMENT
+#+END_quote
 
 
 - you can see the status of lxc containers at any time with the command
@@ -411,4 +417,4 @@ NOTE NOTE NOTE
 
     - Pick some Node Red nodes to install
 
-      ~docker-compose -up -d~:
+  ~docker-compose -up -d~
