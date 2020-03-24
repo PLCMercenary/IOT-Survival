@@ -6,7 +6,7 @@
 * Table of Contents :TOC:
 - [[#prereqs][Prereqs]]
 - [[#install-bootloader-and-os][Install Bootloader and OS]]
-  - [[#pinn-is-a-bottled-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bottled that will allow SSH and VNC at boot time]]
+  - [[#pinn-is-a-bootloader-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bootloader that will allow SSH and VNC at boot time]]
   - [[#install-arch-linux][Install Arch Linux]]
   - [[#when-pi-boots-up-after-download-and-installation-of-arch][When PI Boots up, after download and installation of arch]]
   - [[#installing-essentials][Installing essentials]]
@@ -15,6 +15,10 @@
 <<<<<<< HEAD
   - [[#lets-get-the-snapstore-and-configure-it][Let's get the Snapstore and configure it]]
 =======
+<<<<<<< HEAD
+  - [[#lets-get-the-snapstore-and-configure-it][Let's get the Snapstore and configure it]]
+=======
+>>>>>>> b7b6948... more additions and clarification
   - [[#lets-get-the-snapstore-from-the-aur][Let's get the Snapstore from the AUR]]
 >>>>>>> acad01e... more additions and clarification
   - [[#get-lxd-from-the-snapstore][Get lxd from the snapstore]]
@@ -22,7 +26,11 @@
   - [[#init-lxd][Init LXD]]
   - [[#spin-up-a-ubuntu-1804-container][spin up a ubuntu 18.04 container]]
   - [[#configure-ssh-on-the-container][configure SSH on the container]]
+<<<<<<< HEAD
+- [[#iotstack-and-docker][IOTStack and Docker]]
+=======
   - [[#git-hub-clone-iotstack-into-lxc][Git hub clone IOTStack into LXC]]
+>>>>>>> b7b6948... more additions and clarification
 
 * Prereqs
 :PROPERTIES:
@@ -41,7 +49,7 @@ The following are necessary to be successful at the steps that follow
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 19:45]
 :END:
-** PINN is a bottled that will allow SSH and VNC at boot time
+** PINN is a bootloader that will allow SSH and VNC at boot time
 :PROPERTIES:
 :CREATED:  [2020-03-06 Fri 19:45]
 :END:
@@ -377,6 +385,17 @@ for debian and ubuntu.. anything that isnt going to hold you up typing it
 
 - then you can attach to a console with
 : lxc console <container name>
+<<<<<<< HEAD
+=======
+
+** TODO configure SSH on the container
+:PROPERTIES:
+:CREATED:  [2020-03-24 Tue 03:11]
+:END:
+If using ubuntu container this is fairly easy
+
+
+>>>>>>> b7b6948... more additions and clarification
 
 ** TODO configure SSH on the container
 :PROPERTIES:
@@ -386,7 +405,7 @@ If using ubuntu container this is fairly easy
 
 
 
-** Git hub clone IOTStack into LXC
+* IOTStack and Docker
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 07:30]
 :END:
@@ -426,6 +445,8 @@ NOTE NOTE NOTE
       ~docker-compose -up -d~:
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 
 * Finally after the Docker stack is up
 :PROPERTIES:
@@ -434,3 +455,4 @@ NOTE NOTE NOTE
 Install the Codesys SL from the codesys software onto the LXC address??
 
 >>>>>>> acad01e... more additions and clarification
+>>>>>>> b7b6948... more additions and clarification
