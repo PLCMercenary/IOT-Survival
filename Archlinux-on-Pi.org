@@ -7,9 +7,13 @@
 https://covid19-badges.herokuapp.com/deaths?long=true][]]
 ![Recovered](https://covid19-badges.herokuapp.com/recovered?long=true)
 
+[[https://iot-survival.sandcats.io/shared/jVIolA33-85x5t7hCs9WEYXErqoRKo9lS6zCNra_a4a][Rocket.chat server]]   Join the conversation I know yall are bored!! lets talk
+IoTea!!
 
 * Table of Contents :TOC:
 - [[#prereqs][Prereqs]]
+  - [[#the-following-are-necessary-to-be-successful-at-the-steps-that-follow][The following are necessary to be successful at the steps that follow]]
+  - [[#software-you-should-clone-or-download][Software you should clone or Download]]
 - [[#install-bootloader-and-os][Install Bootloader and OS]]
   - [[#pinn-is-a-bootloader-that-will-allow-ssh-and-vnc-at-boot-time][PINN is a bootloader that will allow SSH and VNC at boot time]]
   - [[#install-arch-linux][Install Arch Linux]]
@@ -30,7 +34,7 @@ https://covid19-badges.herokuapp.com/deaths?long=true][]]
 :PROPERTIES:
 :CREATED:  [2020-03-14 Sat 05:08]
 :END:
-The following are necessary to be successful at the steps that follow
+** The following are necessary to be successful at the steps that follow
 - Raspi 3 or better
 - internet and  local network access (wireless or wired) for pi and eng workstation
 - SD card for booting raspi
@@ -38,6 +42,24 @@ The following are necessary to be successful at the steps that follow
 - VNC software installed [[https://www.realvnc.com/en/connect/download/viewer/][real VNC is free and works]]
 - IP scanner [[https://angryip.org]]
 - some patience and luck
+
+** Software you should clone or Download
+:PROPERTIES:
+:CREATED:  [2020-03-22 Sun 21:36]
+:END:
+- Https://github.com/PLCMercenary/IoT-Survival
+- On Git Hub you should grab this repository - the one you are reading
+  its convinient to have the installation README locally
+- the IOT stack - git from this github
+  https://github.com/PLCMercenary/IOTStack
+  - This is the work of Mr Graham Gardner of South Africa.. I forked it with
+    intention of packaging for the aur but then I learned about Linux containers
+- We will be doing some pretty badass virtualization so if you dont know what
+  LXD / LXC / and or Docker are.... you should read
+
+- [[https://store.codesys.com/tag/product/list/tagId/40/][Codesys Raspi SL or ML download from the Codesys Store]]
+
+- Lastly check out the [[https://forge.codesys.com/tol/wiki/Home/][codesys forge]] for Open Source Projects
 
 * Install Bootloader and OS
 :PROPERTIES:
